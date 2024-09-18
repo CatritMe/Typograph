@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 text_for_typo = (
     "<h1>”Стоимость такого решения на 30-40% дешевле покупки в рознице”, - сказал Шестаков."
     "</h1><p class=”kek” style=”color: red”>”Если возникнет повод для ее повторного переноса, "
-    "Брозовский окажется в списке депутатов от ”Единой России”, которым перед выборами 2026 года "
+    "Брозовский окажется в списке депутатов от ”Единой России”, которым ”перед” выборами 2026 года "
     "будут искать замену. УГМК как раз давно присматривается к этому округу”, - намекает собеседник."
     "Такой же подход власть готова применить к Горевому. "
     "Его семье приписывают контроль над ”Хлебозаводом №7”, "
@@ -13,23 +13,26 @@ text_for_typo = (
     "Евгений Писцов, отвечая на вопрос корреспондента о своем участии в выборах,"
     " заявил: ”Не могу комментировать информацию до ее официального оглашения”.</p>"
 )
+tags = ['span', 'p', 'b', 'a', 'div', 'li', 'h1', 'h2', 'h3', 'button', 'small', 'strong', 'td', 'img', 'input']
 
 
 def typo(text):
-    soup = BeautifulSoup(text, "html.parser")
     strings = []
-    string = soup.find("h1").text
-    strings.append(string)
-    string2 = soup.find("p", class_="”kek”").text
-    strings.append(string2)
+    soup = BeautifulSoup(text, "html.parser")
+    for tag in tags:
+        try:
+            string = soup.find(tag).text
+            strings.append(string)
+        except Exception:
+            pass
     new_text = text
     for s in strings:
         st = s.replace(" - ", " — ")
         if st.count("”") < 2:
             result = st
-        elif st.count("”") == 2:
-            result = st.replace("”", "«", 1).replace("”", "»")
-        elif st.count("”") > 2:
+        # elif st.count("”") == 2:
+        #     result = st.replace("”", "«", 1).replace("”", "»")
+        elif st.count("”") >= 2:
             closed = re.findall(r"\w”", st)
             for cl in closed:
                 st = st.replace(cl, f"{cl[:-1]}»")
@@ -40,7 +43,7 @@ def typo(text):
             res = []
             for sym in st:
                 if sym == "«":
-                    if sym == quotes:
+                    if sym == quotes or quotes == "“":
                         sym = "„"
                         quotes = "„"
                     else:
