@@ -68,8 +68,3 @@ def typo(text):
             result = "".join(res)
         new_text = new_text.replace(s, result)
     return new_text
-
-
-t = '<p>”d” ”d” ”d” ””d” ”d”” ”d” ”d ”d”” ”d”</p>'
-res = typo(t)
-print(res)
