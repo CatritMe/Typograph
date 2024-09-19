@@ -8,6 +8,7 @@ articles = {
     "two quotes": "<div>”Стоимость рознице”, - сказал Шестаков. Шестаков сказал: ”Стоимость рознице”.</div>",
     "nested quotes": "<p>”Стоимость ”Стоимость рознице” рознице”, - сказал Шестаков.</p>",
     "nested two quotes": "<li>”Стоимость ”Стоимость”, ”рознице” рознице”, - сказал Шестаков.</li>",
+    "double quotes": '<p>”d” ”d” ”d” ””d” ”d”” ”d” ”d ”d”” ”d”</p>'
 }
 
 
@@ -39,4 +40,11 @@ def test_typo_nested_two_quotes():
     assert (
         typo(articles["nested two quotes"])
         == "<li>«Стоимость „Стоимость“, „рознице“ рознице», — сказал Шестаков.</li>"
+    )
+
+
+def test_typo_double_quotes():
+    assert (
+        typo(articles["double quotes"])
+        == "<p>«d» «d» «d» «„d“ „d“» «d» «d „d“» «d»</p>"
     )
